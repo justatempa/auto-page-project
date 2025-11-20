@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Security headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self';">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+    <title>关于我们</title>
+
+    <!-- Bootstrap CSS (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+        }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .back-btn {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>关于我们</h1>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="content">
+            <h2>项目背景</h2>
+            <p>这是一个演示项目，用于展示如何创建一个自动生成页面导航的前端系统。该系统通过读取 JSON 配置文件自动生成所有页面的导航卡片。</p>
+
+            <h2>功能特性</h2>
+            <ul>
+                <li>自动生成页面导航卡片</li>
+                <li>响应式设计，适配各种设备</li>
+                <li>安全的前端代码（防止 XSS、CSRF 等）</li>
+                <li>易于扩展，添加新页面只需修改 JSON 文件</li>
+            </ul>
+
+            <h2>技术栈</h2>
+            <ul>
+                <li>HTML5</li>
+                <li>CSS3</li>
+                <li>JavaScript (ES6+)</li>
+                <li>Bootstrap 4 (CDN)</li>
+            </ul>
+
+            <div class="back-btn">
+                <a href="index.html" class="btn btn-primary">返回主页</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+</body>
+</html>

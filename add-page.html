@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Security headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self';">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+    <title>如何添加页面</title>
+
+    <!-- Bootstrap CSS (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            padding: 2rem 0;
+        }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .code-block {
+            margin: 1.5rem 0;
+        }
+        .code-block pre {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+        .back-btn {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>如何添加页面</h1>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="content">
+            <h2>添加新页面的步骤</h2>
+
+            <div class="card bg-light mt-4">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>步骤 1：创建 HTML 文件</strong></h5>
+                    <p class="card-text">在项目根目录下创建一个新的 HTML 文件，例如 <code>new-page.html</code></p>
+
+                    <div class="code-block">
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+
+    <!-- 安全头部必须包含 -->
+    &lt;meta http-equiv="Content-Security-Policy" content="default-src 'self';"&gt;
+    &lt;meta http-equiv="X-XSS-Protection" content="1; mode=block"&gt;
+    &lt;meta http-equiv="X-Frame-Options" content="DENY"&gt;
+    &lt;meta http-equiv="X-Content-Type-Options" content="nosniff"&gt;
+
+    &lt;title&gt;新页面&lt;/title&gt;
+    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css"&gt;
+
+    &lt;style&gt;
+        /* 添加自定义样式 */
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container mt-4"&gt;
+        &lt;h1&gt;新页面&lt;/h1&gt;
+        &lt;p&gt;这是一个新的功能页面&lt;/p&gt;
+
+        &lt;!-- 返回主页按钮必须包含 --&gt;
+        &lt;a href="index.html" class="btn btn-primary"&gt;返回主页&lt;/a&gt;
+    &lt;/div&gt;
+
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"&gt;&lt;/script&gt;
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-light mt-4">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>步骤 2：更新 pages.json</strong></h5>
+                    <p class="card-text">在 <code>pages.json</code> 文件中添加新页面的配置</p>
+
+                    <div class="code-block">
+<pre>[
+    {
+        "title": "关于我们",
+        "description": "了解我们的项目背景",
+        "file": "about.html",
+        "image": "https://via.placeholder.com/400x200?text=About+Us"
+    },
+    {
+        "title": "新页面",
+        "description": "这是一个新的功能页面",
+        "file": "new-page.html",
+        "image": "https://via.placeholder.com/400x200?text=New+Page"
+    }
+]</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h2>配置项说明</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>配置项</th>
+                            <th>说明</th>
+                            <th>是否必填</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>title</code></td>
+                            <td>页面标题（显示在卡片上）</td>
+                            <td>是</td>
+                        </tr>
+                        <tr>
+                            <td><code>description</code></td>
+                            <td>页面简短描述（显示在卡片上）</td>
+                            <td>是</td>
+                        </tr>
+                        <tr>
+                            <td><code>file</code></td>
+                            <td>HTML 文件路径</td>
+                            <td>是</td>
+                        </tr>
+                        <tr>
+                            <td><code>image</code></td>
+                            <td>卡片图片 URL</td>
+                            <td>否（默认使用占位图片）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4">
+                <h2>安全提示</h2>
+                <ul>
+                    <li>确保所有页面都包含安全头部</li>
+                    <li>不要在页面中包含未经验证的用户输入</li>
+                    <li>使用 HTTPS 部署到服务器</li>
+                    <li>不要在页面中包含恶意脚本</li>
+                </ul>
+            </div>
+
+            <div class="back-btn">
+                <a href="index.html" class="btn btn-primary">返回主页</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+</body>
+</html>

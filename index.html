@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Content Security Policy (CSP) - 安全策略 -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline';
+        style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+        font-src 'self' https://cdnjs.cloudflare.com;
+    ">
+    <!-- XSS 保护 -->
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <!-- 点击劫持保护 -->
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <!-- 内容类型嗅探保护 -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+    <!-- Bootstrap CSS (CDN) - 用于样式 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    <!-- CSS Generated Images -->
+    <link rel="stylesheet" href="css/generated-images.css">
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .card-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature-card {
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: #007bff;
+        }
+        .feature-card img {
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #343a40;
+        }
+        .card-text {
+            color: #6c757d;
+            line-height: 1.5;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header text-center">
+        <div class="container">
+            <h1>项目功能主页</h1>
+            <p>以下是所有可用的功能页面，点击卡片即可访问</p>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row card-container" id="pagesContainer">
+            <!-- 页面卡片将通过JavaScript自动生成 -->
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (CDN) - 可选，用于增强功能 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+
+    <script>
+        // 获取页面列表并生成卡片
+        fetch('pages.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch pages');
+                }
+                return response.json();
+            })
+            .then(pages => {
+                const container = document.getElementById('pagesContainer');
+
+                pages.forEach(page => {
+                    // 安全处理：转义HTML内容以防止XSS
+                    const title = escapeHtml(page.title);
+                    const description = escapeHtml(page.description);
+                    const image = page.image || 'https://via.placeholder.com/400x200?text=Feature+Page';
+
+                    // 创建卡片元素
+                    const card = document.createElement('div');
+                    card.className = 'col-md-4 col-sm-6 mb-4';
+
+                    let cardImage;
+                    if (page.imageType === 'css' && page.imageClass) {
+                        // 使用CSS生成图像
+                        cardImage = `<div class="${page.imageClass}"></div>`;
+                    } else {
+                        // 使用传统图像链接
+                        cardImage = `<img src="${image}" class="card-img-top" alt="${title}">`;
+                    }
+
+                    card.innerHTML = `
+                        <div class="card feature-card h-100">
+                            ${cardImage}
+                            <div class="card-body">
+                                <h5 class="card-title">${title}</h5>
+                                <p class="card-text">${description}</p>
+                                <a href="${page.file}" class="btn btn-primary btn-block" target="_self">
+                                    访问页面
+                                </a>
+                            </div>
+                        </div>
+                    `;
+
+                    container.appendChild(card);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading pages:', error);
+                const container = document.getElementById('pagesContainer');
+                container.innerHTML = `
+                    <div class="col-12 text-center">
+                        <div class="alert alert-danger" role="alert">
+                            加载页面列表失败，请检查服务器配置
+                        </div>
+                    </div>
+                `;
+            });
+
+        // 转义HTML函数 - 防止XSS攻击
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

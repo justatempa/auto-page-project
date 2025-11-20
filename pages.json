@@ -1,0 +1,42 @@
+[
+    {
+        "title": "关于我们",
+        "description": "了解我们的项目背景、团队和目标",
+        "file": "about.html",
+        "imageType": "css",
+        "imageClass": "css-image-abstract-gradient",
+        "image": "https://via.placeholder.com/400x200?text=About+Us"
+    },
+    {
+        "title": "联系我们",
+        "description": "获取联系方式，与我们取得联系",
+        "file": "contact.html",
+        "imageType": "css",
+        "imageClass": "css-image-communication",
+        "image": "https://via.placeholder.com/400x200?text=Contact+Us"
+    },
+    {
+        "title": "功能介绍",
+        "description": "详细介绍项目的各种功能和特性",
+        "file": "features.html",
+        "imageType": "css",
+        "imageClass": "css-image-features",
+        "image": "https://via.placeholder.com/400x200?text=Features"
+    },
+    {
+        "title": "如何添加页面",
+        "description": "学习如何向项目中添加新的功能页面",
+        "file": "add-page.html",
+        "imageType": "css",
+        "imageClass": "css-image-add-page",
+        "image": "https://via.placeholder.com/400x200?text=Add+Page"
+    },
+    {
+        "title": "CSS图像演示",
+        "description": "查看各种使用纯CSS生成的图像样式",
+        "file": "css-images-demo.html",
+        "imageType": "css",
+        "imageClass": "css-image-tech-style",
+        "image": "https://via.placeholder.com/400x200?text=CSS+Images"
+    }
+]

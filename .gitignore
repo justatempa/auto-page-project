@@ -1,0 +1,21 @@
+# 忽略系统文件
+Thumbs.db
+.DS_Store
+ehthumbs.db
+Icon?
+._*
+
+# 忽略编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+.DS_Store
