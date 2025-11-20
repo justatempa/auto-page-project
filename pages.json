@@ -4,24 +4,27 @@
         "description": "了解我们的项目背景、团队和目标",
         "file": "about.html",
         "imageType": "css",
-        "imageClass": "css-image-abstract-gradient",
-        "image": "https://via.placeholder.com/400x200?text=About+Us"
+        "imageClass": "css-image-landscape",
+        "image": "https://via.placeholder.com/400x200?text=About+Us",
+        "category": "公司信息"
     },
     {
         "title": "联系我们",
         "description": "获取联系方式，与我们取得联系",
         "file": "contact.html",
         "imageType": "css",
-        "imageClass": "css-image-communication",
-        "image": "https://via.placeholder.com/400x200?text=Contact+Us"
+        "imageClass": "css-image-cat",
+        "image": "https://via.placeholder.com/400x200?text=Contact+Us",
+        "category": "公司信息"
     },
     {
         "title": "功能介绍",
         "description": "详细介绍项目的各种功能和特性",
         "file": "features.html",
         "imageType": "css",
-        "imageClass": "css-image-features",
-        "image": "https://via.placeholder.com/400x200?text=Features"
+        "imageClass": "css-image-rabbit",
+        "image": "https://via.placeholder.com/400x200?text=Features",
+        "category": "产品功能"
     },
     {
         "title": "如何添加页面",
@@ -29,7 +32,8 @@
         "file": "add-page.html",
         "imageType": "css",
         "imageClass": "css-image-add-page",
-        "image": "https://via.placeholder.com/400x200?text=Add+Page"
+        "image": "https://via.placeholder.com/400x200?text=Add+Page",
+        "category": "使用指南"
     },
     {
         "title": "CSS图像演示",
@@ -37,6 +41,7 @@
         "file": "css-images-demo.html",
         "imageType": "css",
         "imageClass": "css-image-tech-style",
-        "image": "https://via.placeholder.com/400x200?text=CSS+Images"
+        "image": "https://via.placeholder.com/400x200?text=CSS+Images",
+        "category": "技术演示"
     }
 ]

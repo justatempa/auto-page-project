@@ -236,8 +236,993 @@
     transform: translate(-50%, -50%);
 }
 
+/* Cute Cat - for fun and friendly pages */
+.css-image-cat {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, #ffe6e6 0%, #ffcccc 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Cat Body */
+.css-image-cat::before {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 100px;
+    background: #e0e0e0;
+    border-radius: 50% 50% 40% 40%;
+    bottom: 30px;
+}
+
+/* Cat Ears */
+.css-image-cat::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 40px solid #e0e0e0;
+    top: 40px;
+    left: calc(50% - 30px);
+    box-shadow: 40px 0 0 #e0e0e0;
+}
+
+/* Cat Face Details */
+.css-image-cat span {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #000;
+    border-radius: 50%;
+    top: 85px;
+    left: calc(50% - 20px);
+    box-shadow: 40px 0 0 #000;
+}
+
+/* Cat Nose */
+.css-image-cat span::before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #ff9999;
+    border-radius: 50%;
+    top: 15px;
+    left: 16px;
+}
+
+/* Cat Whiskers */
+.css-image-cat span::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 2px;
+    background: #000;
+    top: 20px;
+    left: -30px;
+    box-shadow:
+        0 5px 0 #000,
+        65px 0 0 #000,
+        65px 5px 0 #000;
+}
+
+/* Scenic Landscape - with sun and hills */
+.css-image-landscape {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, #87ceeb 0%, #98d8c8 60%, #90ee90 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Sun */
+.css-image-landscape::before {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: #fffacd;
+    border-radius: 50%;
+    top: 20px;
+    right: 40px;
+    box-shadow: 0 0 20px #fffacd, 0 0 40px #fffacd;
+}
+
+/* Hills */
+.css-image-landscape::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 80px;
+    background: #228b22;
+    border-radius: 100px 100px 0 0;
+    bottom: 0;
+    left: -50px;
+    box-shadow:
+        150px 0 0 #32cd32,
+        300px 0 0 #228b22,
+        450px 0 0 #32cd32;
+}
+
+/* Clouds */
+.css-image-landscape span {
+    position: absolute;
+    width: 80px;
+    height: 30px;
+    background: #fff;
+    border-radius: 50px;
+    top: 50px;
+    left: 50px;
+    animation: float 15s linear infinite;
+}
+
+.css-image-landscape span::before {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border-radius: 50%;
+    top: -25px;
+    left: 10px;
+    box-shadow: 40px 10px 0 #fff;
+}
+
+/* Adorable Rabbit */
+.css-image-rabbit {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, #ffb6c1 0%, #ffe4e1 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Rabbit Body */
+.css-image-rabbit::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 120px;
+    background: #fff;
+    border-radius: 50% 50% 40% 40%;
+    bottom: 30px;
+}
+
+/* Rabbit Ears */
+.css-image-rabbit::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 80px;
+    background: #fff;
+    border-radius: 50px;
+    top: 20px;
+    left: calc(50% - 25px);
+    transform: rotate(-10deg);
+    box-shadow: 50px 0 0 #fff;
+}
+
+/* Rabbit Face */
+.css-image-rabbit span {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #000;
+    border-radius: 50%;
+    top: 75px;
+    left: calc(50% - 15px);
+    box-shadow: 30px 0 0 #000;
+}
+
+/* Rabbit Nose & Whiskers */
+.css-image-rabbit span::before {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 8px;
+    background: #ffb6c1;
+    border-radius: 50%;
+    top: 15px;
+    left: 9px;
+}
+
+.css-image-rabbit span::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: #000;
+    top: 18px;
+    left: -25px;
+    transform: rotate(-5deg);
+    box-shadow:
+        0 5px 0 #000,
+        55px -5px 0 #000,
+        55px 0 0 #000;
+}
+
+/* Floating Animation */
+@keyframes float {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(1200px); }
+}
+
 /* To use these CSS images:
    Replace <img src="placeholder"> with a <div> element:
    <div class="css-image-abstract-gradient"></div>
 
    Or modify the HTML structure to support CSS backgrounds */
+
+/* Cute Panda */
+.css-image-panda {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, #e0f6ff 0%, #f0f8ff 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Panda Body */
+.css-image-panda::before {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 100px;
+    background: #fff;
+    border-radius: 50%;
+    bottom: 30px;
+}
+
+/* Panda Ears */
+.css-image-panda::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: #000;
+    border-radius: 50%;
+    top: 40px;
+    left: calc(50% - 45px);
+    box-shadow: 60px 0 0 #000;
+}
+
+/* Panda Face Details */
+.css-image-panda span {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #000;
+    border-radius: 50%;
+    top: 85px;
+    left: calc(50% - 20px);
+    box-shadow: 40px 0 0 #000;
+}
+
+/* Panda Nose */
+.css-image-panda span::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 10px;
+    background: #000;
+    border-radius: 50%;
+    top: 15px;
+    left: 12px;
+}
+
+/* Cute Bear */
+.css-image-bear {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, #ffeaa7 0%, #fab1a0 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Bear Body */
+.css-image-bear::before {
+    content: '';
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    background: #fdcb6e;
+    border-radius: 50%;
+    bottom: 25px;
+}
+
+/* Bear Ears */
+.css-image-bear::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: #e17055;
+    border-radius: 50%;
+    top: 45px;
+    left: calc(50% - 40px);
+    box-shadow: 50px 0 0 #e17055;
+}
+
+/* Bear Face */
+.css-image-bear span {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #2d3436;
+    border-radius: 50%;
+    top: 90px;
+    left: calc(50% - 18px);
+    box-shadow: 36px 0 0 #2d3436;
+}
+
+/* Bear Nose */
+.css-image-bear span::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 12px;
+    background: #2d3436;
+    border-radius: 50%;
+    top: 12px;
+    left: 8px;
+}
+
+/* Bear Cheeks */
+.css-image-bear span::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #ff7675;
+    border-radius: 50%;
+    top: 10px;
+    left: -40px;
+    box-shadow: 80px 0 0 #ff7675;
+}
+
+/* Forest Scene */
+.css-image-forest {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, #87ceeb 0%, #98d8c8 50%, #228b22 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Sun */
+.css-image-forest::before {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: #ffeb3b;
+    border-radius: 50%;
+    top: 15px;
+    right: 30px;
+}
+
+/* Trees */
+.css-image-forest::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 60px solid #4caf50;
+    bottom: 50px;
+    left: 80px;
+    box-shadow: 
+        80px 0 0 0 #4caf50,
+        160px 0 0 0 #4caf50,
+        40px -20px 0 0 #4caf50,
+        120px -20px 0 0 #4caf50;
+}
+
+/* Tree Trunks */
+.css-image-forest span {
+    position: absolute;
+    width: 10px;
+    height: 40px;
+    background: #795548;
+    bottom: 50px;
+    left: 90px;
+    box-shadow: 
+        80px 0 0 #795548,
+        160px 0 0 #795548,
+        40px -20px 0 #795548,
+        120px -20px 0 #795548;
+}
+
+/* Cute Fox */
+.css-image-fox {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, #ffeaa7 0%, #fab1a0 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Fox Body */
+.css-image-fox::before {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 80px;
+    background: #ff7675;
+    border-radius: 60% 40% 40% 40%;
+    bottom: 50px;
+    transform: rotate(-10deg);
+}
+
+/* Fox Ears */
+.css-image-fox::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 40px solid #ff7675;
+    top: 40px;
+    left: calc(50% - 45px);
+    box-shadow: 50px 0 0 #ff7675;
+}
+
+/* Fox Face */
+.css-image-fox span {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #2d3436;
+    border-radius: 50%;
+    top: 90px;
+    left: calc(50% - 5px);
+    box-shadow: 
+        -30px -5px 0 #2d3436,
+        20px -5px 0 #2d3436;
+}
+
+/* Fox Tail */
+.css-image-fox span::before {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 40px;
+    background: #ff7675;
+    border-radius: 50%;
+    top: 20px;
+    left: -60px;
+    transform: rotate(20deg);
+}
+
+/* Ocean Scene */
+.css-image-ocean {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, #74b9ff 0%, #0984e3 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Sun */
+.css-image-ocean::before {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: #fdcb6e;
+    border-radius: 50%;
+    top: 20px;
+    left: 30px;
+}
+
+/* Waves */
+.css-image-ocean::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q25 0 50 10 T100 10' stroke='%230984e3' fill='none' stroke-width='2'/%3E%3C/svg%3E");
+    bottom: 0;
+    background-size: 100px 30px;
+    animation: wave 3s linear infinite;
+}
+
+/* Ocean Foam */
+.css-image-ocean span {
+    position: absolute;
+    width: 20px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    bottom: 30px;
+    left: 100px;
+    animation: foam 4s ease-in-out infinite;
+    box-shadow: 
+        50px 0 0 #fff,
+        100px 0 0 #fff,
+        150px 0 0 #fff,
+        200px 0 0 #fff;
+}
+
+@keyframes wave {
+    0% { background-position-x: 0; }
+    100% { background-position-x: 100px; }
+}
+
+@keyframes foam {
+    0%, 100% { opacity: 0; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-10px); }
+}
+
+/* Cute Dog */
+.css-image-dog {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, #d6eaf8 0%, #aed6f1 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Dog Body */
+.css-image-dog::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 80px;
+    background: #55acee;
+    border-radius: 50% 50% 40% 40%;
+    bottom: 50px;
+}
+
+/* Dog Ears */
+.css-image-dog::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 35px solid #3b82f6;
+    top: 45px;
+    left: calc(50% - 35px);
+    box-shadow: 40px 0 0 #3b82f6;
+}
+
+/* Dog Face */
+.css-image-dog span {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #2d3436;
+    border-radius: 50%;
+    top: 95px;
+    left: calc(50% - 15px);
+    box-shadow: 30px 0 0 #2d3436;
+}
+
+/* Dog Nose */
+.css-image-dog span::before {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 10px;
+    background: #2d3436;
+    border-radius: 50%;
+    top: 10px;
+    left: 7px;
+}
+
+/* Dog Tail */
+.css-image-dog span::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 15px;
+    background: #3b82f6;
+    border-radius: 50%;
+    top: -5px;
+    left: -50px;
+    transform: rotate(-30deg);
+}
+
+/* Mountain Landscape */
+.css-image-mountain {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, #87ceeb 0%, #e0f7fa 40%, #a5d6a7 70%, #81c784 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Sun */
+.css-image-mountain::before {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: #ffeb3b;
+    border-radius: 50%;
+    top: 20px;
+    right: 40px;
+}
+
+/* Mountains */
+.css-image-mountain::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    border-bottom: 120px solid #66bb6a;
+    bottom: 0;
+    left: 100px;
+    box-shadow: 
+        120px 0 0 #4caf50,
+        60px -20px 0 #81c784,
+        180px -20px 0 #66bb6a;
+}
+
+/* Snow on mountains */
+.css-image-mountain span {
+    position: absolute;
+    width: 40px;
+    height: 30px;
+    background: #fff;
+    border-radius: 50% 50% 50% 0;
+    bottom: 100px;
+    left: 110px;
+    transform: rotate(45deg);
+    box-shadow: 
+        120px 0 0 #fff,
+        60px -20px 0 #fff,
+        180px -20px 0 #fff;
+}
+
+/* Cute Owl */
+.css-image-owl {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, #d5dbdb 0%, #abb2b9 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Owl Body */
+.css-image-owl::before {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 130px;
+    background: #7f8c8d;
+    border-radius: 50%;
+    bottom: 20px;
+}
+
+/* Owl Eyes */
+.css-image-owl::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    border-radius: 50%;
+    top: 60px;
+    left: calc(50% - 35px);
+    box-shadow: 40px 0 0 #fff;
+}
+
+/* Owl Eye Details */
+.css-image-owl span {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #000;
+    border-radius: 50%;
+    top: 68px;
+    left: calc(50% - 26px);
+    box-shadow: 40px 0 0 #000;
+}
+
+/* Owl Beak */
+.css-image-owl span::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 12px;
+    background: #f1c40f;
+    border-radius: 50%;
+    top: 15px;
+    left: 4px;
+}
+
+/* Owl Wings */
+.css-image-owl span::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 20px;
+    background: #6c7b7c;
+    border-radius: 50%;
+    top: -10px;
+    left: -30px;
+    box-shadow: 70px 0 0 #6c7b7c;
+}
+
+/* Cute Butterfly */
+.css-image-butterfly {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, #fd79a8 0%, #fdcb6e 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Butterfly Body */
+.css-image-butterfly::before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 100px;
+    background: #2d3436;
+    border-radius: 50%;
+    bottom: 50px;
+}
+
+/* Butterfly Wings */
+.css-image-butterfly::after {
+    content: '';
+    position: absolute;
+    width: 70px;
+    height: 60px;
+    background: #e84393;
+    border-radius: 50% 50% 40% 40%;
+    top: 70px;
+    left: calc(50% - 60px);
+    box-shadow: 
+        60px 0 0 #e84393,
+        0 -40px 0 #fdcb6e,
+        60px -40px 0 #fdcb6e;
+}
+
+/* Butterfly Wing Patterns */
+.css-image-butterfly span {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #fdcb6e;
+    border-radius: 50%;
+    top: 85px;
+    left: calc(50% - 50px);
+    box-shadow: 
+        100px 0 0 #fdcb6e,
+        0 -40px 0 #e84393,
+        100px -40px 0 #e84393;
+}
+
+/* Butterfly Antennae */
+.css-image-butterfly span::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    background: #2d3436;
+    top: -25px;
+    left: 17px;
+    transform: rotate(-30deg);
+    box-shadow: 45px 0 0 #2d3436;
+}
+
+/* Butterfly Antennae Tips */
+.css-image-butterfly span::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #2d3436;
+    border-radius: 50%;
+    top: -30px;
+    left: 15px;
+    box-shadow: 45px 0 0 #2d3436;
+}
+
+/* Playful Dolphin */
+.css-image-dolphin {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, #74b9ff 0%, #a29bfe 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Dolphin Body */
+.css-image-dolphin::before {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 50px;
+    background: #74b9ff;
+    border-radius: 50% 50% 50% 50%;
+    top: 90px;
+    left: calc(50% - 60px);
+    transform: rotate(10deg);
+}
+
+/* Dolphin Fin */
+.css-image-dolphin::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 30px solid #0984e3;
+    top: 85px;
+    left: calc(50% + 30px);
+}
+
+/* Dolphin Face */
+.css-image-dolphin span {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #2d3436;
+    border-radius: 50%;
+    top: 98px;
+    left: calc(50% - 40px);
+}
+
+/* Dolphin Smile */
+.css-image-dolphin span::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 10px;
+    border-bottom: 3px solid #2d3436;
+    border-radius: 0 0 50% 50%;
+    top: 8px;
+    left: -7px;
+}
+
+/* Dolphin Splash */
+.css-image-dolphin span::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    top: -15px;
+    left: -20px;
+    animation: splash 2s ease-in-out infinite;
+    box-shadow: 
+        20px -10px 0 #fff,
+        40px 5px 0 #fff;
+}
+
+@keyframes splash {
+    0%, 100% { opacity: 0; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-10px); }
+}
+
+/* Sunset Beach */
+.css-image-sunset {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, #ff7675 0%, #fdcb6e 30%, #74b9ff 70%, #fd79a8 100%);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Sun */
+.css-image-sunset::before {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: #fdcb6e;
+    border-radius: 50%;
+    top: 40px;
+    left: calc(50% - 30px);
+    box-shadow: 0 0 30px #fdcb6e;
+}
+
+/* Beach */
+.css-image-sunset::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    background: #fdcb6e;
+    bottom: 0;
+}
+
+/* Palm Tree */
+.css-image-sunset span {
+    position: absolute;
+    width: 8px;
+    height: 80px;
+    background: #8b4513;
+    bottom: 60px;
+    left: calc(50% + 60px);
+}
+
+/* Palm Leaves */
+.css-image-sunset span::before {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #2ecc71 30%, transparent 30%),
+                radial-gradient(circle, #2ecc71 30%, transparent 30%),
+                radial-gradient(circle, #2ecc71 30%, transparent 30%),
+                radial-gradient(circle, #2ecc71 30%, transparent 30%),
+                radial-gradient(circle, #2ecc71 30%, transparent 30%),
+                radial-gradient(circle, #2ecc71 30%, transparent 30%),
+                radial-gradient(circle, #2ecc71 30%, transparent 30%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px -10px, 20px -5px, 5px -15px, -10px -5px, -5px -15px, 15px -10px;
+    top: -40px;
+    left: -25px;
+    transform: rotate(30deg);
+}
+
+/* Seagulls */
+.css-image-sunset span::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 10px;
+    border-top: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    top: 20px;
+    left: -100px;
+    animation: fly 6s linear infinite;
+    box-shadow: 
+        100px 0 0 rgba(255, 255, 255, 0.8),
+        200px -10px 0 rgba(255, 255, 255, 0.8);
+}
+
+@keyframes fly {
+    0% { left: -100px; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: 1200px; opacity: 0; }
+}

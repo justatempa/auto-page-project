@@ -92,6 +92,15 @@
     </div>
 
     <div class="container mt-4">
+        <!-- 分类筛选栏 -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="categoryFilters">
+                    <!-- 分类按钮将通过JavaScript自动生成 -->
+                </div>
+            </div>
+        </div>
+
         <div class="row card-container" id="pagesContainer">
             <!-- 页面卡片将通过JavaScript自动生成 -->
         </div>
@@ -102,6 +111,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
 
     <script>
+        // 存储所有页面数据和分类信息
+        let allPages = [];
+        let allCategories = [];
+
         // 获取页面列表并生成卡片
         fetch('pages.json')
             .then(response => {
@@ -111,42 +124,22 @@
                 return response.json();
             })
             .then(pages => {
-                const container = document.getElementById('pagesContainer');
+                allPages = pages;
 
+                // 提取所有唯一分类
+                const categoriesSet = new Set();
                 pages.forEach(page => {
-                    // 安全处理：转义HTML内容以防止XSS
-                    const title = escapeHtml(page.title);
-                    const description = escapeHtml(page.description);
-                    const image = page.image || 'https://via.placeholder.com/400x200?text=Feature+Page';
-
-                    // 创建卡片元素
-                    const card = document.createElement('div');
-                    card.className = 'col-md-4 col-sm-6 mb-4';
-
-                    let cardImage;
-                    if (page.imageType === 'css' && page.imageClass) {
-                        // 使用CSS生成图像
-                        cardImage = `<div class="${page.imageClass}"></div>`;
-                    } else {
-                        // 使用传统图像链接
-                        cardImage = `<img src="${image}" class="card-img-top" alt="${title}">`;
+                    if (page.category) {
+                        categoriesSet.add(page.category);
                     }
-
-                    card.innerHTML = `
-                        <div class="card feature-card h-100">
-                            ${cardImage}
-                            <div class="card-body">
-                                <h5 class="card-title">${title}</h5>
-                                <p class="card-text">${description}</p>
-                                <a href="${page.file}" class="btn btn-primary btn-block" target="_self">
-                                    访问页面
-                                </a>
-                            </div>
-                        </div>
-                    `;
-
-                    container.appendChild(card);
                 });
+                allCategories = Array.from(categoriesSet);
+
+                // 生成分类筛选按钮
+                generateCategoryFilters();
+
+                // 生成所有页面卡片
+                generatePageCards(pages);
             })
             .catch(error => {
                 console.error('Error loading pages:', error);
@@ -159,6 +152,118 @@
                     </div>
                 `;
             });
+
+        // 生成分类筛选按钮
+        function generateCategoryFilters() {
+            const filtersContainer = document.getElementById('categoryFilters');
+
+            // 全部分类按钮
+            const allFilter = document.createElement('label');
+            allFilter.className = 'btn btn-outline-primary active';
+            allFilter.innerHTML = `
+                <input type="radio" name="category" id="filter-all" autocomplete="off" checked> 全部分类
+            `;
+            allFilter.addEventListener('click', () => filterByCategory(null));
+            filtersContainer.appendChild(allFilter);
+
+            // 各个分类按钮
+            allCategories.forEach((category, index) => {
+                const filterBtn = document.createElement('label');
+                filterBtn.className = 'btn btn-outline-primary';
+                filterBtn.innerHTML = `
+                    <input type="radio" name="category" id="filter-${index}" autocomplete="off"> ${category}
+                `;
+                filterBtn.addEventListener('click', () => filterByCategory(category));
+                filtersContainer.appendChild(filterBtn);
+            });
+        }
+
+        // 生成页面卡片
+        function generatePageCards(pages) {
+            const container = document.getElementById('pagesContainer');
+            container.innerHTML = ''; // 清空容器
+
+            pages.forEach(page => {
+                // 安全处理：转义HTML内容以防止XSS
+                const title = escapeHtml(page.title);
+                const description = escapeHtml(page.description);
+                const image = page.image || 'https://via.placeholder.com/400x200?text=Feature+Page';
+
+                // 创建卡片元素
+                const card = document.createElement('div');
+                card.className = 'col-md-4 col-sm-6 mb-4 page-card';
+                // 添加分类数据属性
+                if (page.category) {
+                    card.setAttribute('data-category', page.category);
+                }
+
+                let cardImage;
+                if (page.imageType === 'css' && page.imageClass) {
+                    // 使用CSS生成图像
+                    cardImage = `<div class="${page.imageClass}"></div>`;
+                } else {
+                    // 使用传统图像链接
+                    cardImage = `<img src="${image}" class="card-img-top" alt="${title}">`;
+                }
+
+                card.innerHTML = `
+                    <div class="card feature-card h-100">
+                        ${cardImage}
+                        <div class="card-body">
+                            <h5 class="card-title">${title}</h5>
+                            <p class="card-text">${description}</p>
+                            <a href="${page.file}" class="btn btn-primary btn-block" target="_self">
+                                访问页面
+                            </a>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // 根据分类筛选页面
+        function filterByCategory(category) {
+            const cards = document.querySelectorAll('.page-card');
+            const filterButtons = document.querySelectorAll('#categoryFilters .btn');
+
+            // 切换按钮的active状态
+            filterButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // 显示或隐藏卡片
+            cards.forEach(card => {
+                if (category === null) {
+                    // 显示所有卡片
+                    card.style.display = 'block';
+                } else {
+                    // 根据分类显示或隐藏卡片
+                    const cardCategory = card.getAttribute('data-category');
+                    if (cardCategory === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+
+            // 为当前选中的按钮添加active状态
+            if (category === null) {
+                // 全部分类按钮
+                document.querySelector('#categoryFilters .btn:first-child').classList.add('active');
+            } else {
+                // 找到对应的分类按钮
+                filterButtons.forEach(btn => {
+                    const input = btn.querySelector('input');
+                    const label = btn.textContent.trim();
+                    if (label === category) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+        }
 
         // 转义HTML函数 - 防止XSS攻击
         function escapeHtml(text) {
