@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown 思维导图生成器</title>
+    <style>
+        :root {
+            --editor-bg: #2b2d42;
+            --editor-text: #edf2f4;
+            --preview-bg: #ffffff;
+            --accent-color: #3a86ff;
+            --btn-hover: #2667cc;
+            --scrollbar-bg: #1a1c29;
+            --scrollbar-thumb: #555;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { height: 100%; width: 100%; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; overflow: hidden; }
+
+        .container { display: flex; height: 100vh; width: 100vw; }
+
+        /* 左侧编辑区 */
+        .editor-pane {
+            width: 35%; min-width: 300px;
+            background-color: var(--editor-bg);
+            display: flex; flex-direction: column;
+            border-right: 1px solid #444;
+            position: relative; z-index: 10;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+        }
+
+        .editor-header {
+            padding: 15px; background-color: rgba(0,0,0,0.2);
+            color: #8d99ae; font-size: 0.9rem; font-weight: bold;
+            text-transform: uppercase; letter-spacing: 1px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        textarea {
+            flex: 1; width: 100%; background-color: transparent;
+            color: var(--editor-text); border: none; padding: 20px;
+            font-size: 16px; line-height: 1.6; resize: none; outline: none;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        textarea::-webkit-scrollbar { width: 10px; background-color: var(--scrollbar-bg); }
+        textarea::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 5px; }
+
+        /* 右侧渲染区 */
+        .preview-pane {
+            flex: 1; background-color: var(--preview-bg);
+            position: relative; display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        #mindmap-svg { width: 100%; height: 100%; }
+
+        /* 工具栏 */
+        .toolbar {
+            position: absolute; top: 20px; right: 20px;
+            display: flex; gap: 10px; z-index: 100;
+            background: rgba(255, 255, 255, 0.95); padding: 8px;
+            border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .btn {
+            padding: 8px 12px; border: none; border-radius: 6px;
+            cursor: pointer; font-size: 13px; font-weight: 600;
+            transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;
+            color: #333; background: #f0f2f5; text-decoration: none;
+        }
+        .btn:hover { background-color: #e2e6ea; }
+        
+        .btn-primary { background-color: var(--accent-color); color: white; }
+        .btn-primary:hover { background-color: var(--btn-hover); }
+
+        .loading-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.9); display: none;
+            justify-content: center; align-items: center; flex-direction: column;
+            z-index: 200; font-size: 1rem; color: #555; gap: 10px;
+        }
+        .spinner {
+            width: 24px; height: 24px; border: 3px solid #ddd;
+            border-top-color: var(--accent-color); border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+
+    <!-- Markmap 核心 -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.min.js"></script>
+    
+    <!-- 新增：html-to-image (解决 Tainted Canvas 报错的唯一稳健方案，12KB) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="editor-pane">
+        <div class="editor-header">Markdown 输入</div>
+        <textarea id="editor" spellcheck="false"># 核心主题
+## 想法 A
+- 细节 1
+- 细节 2
+## 想法 B
+### 深入分析
+- 数据支持
+- 案例研究
+## 待办事项
+- [ ] 编写代码
+- [x] 设计 UI
+- [ ] 导出图片
+</textarea>
+    </div>
+
+    <div class="preview-pane" id="preview-container">
+        <div class="toolbar">
+            <a class="btn" href="https://markmap.js.org/repl" target="_blank" rel="noopener noreferrer">参考站点 ↗</a>
+            <button class="btn" onclick="toggleFullScreen()">全屏</button>
+            <button class="btn" onclick="exportSVG()">导出 SVG (推荐)</button>
+            <button class="btn btn-primary" onclick="exportPNG()">导出 PNG</button>
+        </div>
+        <svg id="mindmap-svg"></svg>
+        <div class="loading-overlay" id="loading">
+            <div class="spinner"></div>
+            <span id="loading-text">处理中...</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const { Transformer } = window.markmap;
+    const { Markmap } = window.markmap;
+    const transformer = new Transformer();
+    let mm;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        mm = Markmap.create(document.querySelector('#mindmap-svg'), {
+            zoom: true, pan: true, scrollForPan: true
+        });
+        update();
+        document.getElementById('editor').addEventListener('input', debounce(update, 500));
+    });
+
+    function update() {
+        const markdown = document.getElementById('editor').value;
+        const { root } = transformer.transform(markdown);
+        mm.setData(root);
+        mm.fit();
+    }
+
+    const debounce = (fn, wait) => {
+        let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), wait); };
+    };
+
+    function toggleFullScreen() {
+        const el = document.getElementById('preview-container');
+        document.fullscreenElement ? document.exitFullscreen() : el.requestFullscreen();
+    }
+
+    // -----------------------------------------------------------
+    // 方案 1: 导出 SVG (最快，最清晰，长图无压力，0报错)
+    // -----------------------------------------------------------
+    function exportSVG() {
+        const svgEl = document.querySelector('#mindmap-svg');
+        const serializer = new XMLSerializer();
+        let source = serializer.serializeToString(svgEl);
+
+        // 添加命名空间
+        if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
+            source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+        }
+        // 内联简单的字体样式
+        source = source.replace('</svg>', '<style>.markmap-node-text { font-family: sans-serif; }</style></svg>');
+
+        const blob = new Blob([source], {type: "image/svg+xml;charset=utf-8"});
+        downloadBlob(blob, 'mindmap.svg');
+    }
+
+    // -----------------------------------------------------------
+    // 方案 2: 导出 PNG (使用 html-to-image 库解决 SecurityError)
+    // -----------------------------------------------------------
+    async function exportPNG() {
+        const loading = document.getElementById('loading');
+        const svgEl = document.querySelector('#mindmap-svg');
+        
+        loading.style.display = 'flex';
+        document.getElementById('loading-text').innerText = "正在生成高清长图...";
+
+        try {
+            // 1. 获取导图内容的真实尺寸
+            const g = svgEl.querySelector('g');
+            // 等待一帧确保渲染
+            await new Promise(r => setTimeout(r, 50));
+            const bbox = g.getBBox();
+            
+            // 2. 计算需要的宽高（增加 Padding）
+            const padding = 40;
+            const fullWidth = Math.ceil(bbox.width) + padding * 2;
+            const fullHeight = Math.ceil(bbox.height) + padding * 2;
+
+            // 3. 临时调整 SVG 容器大小以容纳完整内容
+            // 必须显式设置 width/height，否则 html-to-image 只能截取当前屏幕可视区域
+            const originalStyle = svgEl.getAttribute('style');
+            svgEl.style.width = `${fullWidth}px`;
+            svgEl.style.height = `${fullHeight}px`;
+            
+            // 4. 让 Markmap 重新适配这个巨大的容器（scale 变为 1）
+            await mm.fit(); 
+
+            // 5. 转换！
+            const dataUrl = await htmlToImage.toPng(svgEl, {
+                backgroundColor: '#ffffff',
+                width: fullWidth,
+                height: fullHeight,
+                style: {
+                    // 强制移除可能的 transform 偏移
+                    margin: '0',
+                }
+            });
+
+            // 6. 下载
+            const link = document.createElement('a');
+            link.download = 'mindmap.png';
+            link.href = dataUrl;
+            link.click();
+
+        } catch (err) {
+            console.error(err);
+            alert('导出失败，建议使用 "导出 SVG" 功能。');
+        } finally {
+            // 7. 恢复原样
+            svgEl.style.width = '100%';
+            svgEl.style.height = '100%';
+            await mm.fit(); // 恢复视图
+            loading.style.display = 'none';
+        }
+    }
+
+    function downloadBlob(blob, filename) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+</script>
+
+</body>
+</html>
