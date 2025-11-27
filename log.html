@@ -318,7 +318,7 @@
       }
       
       dateRecords.forEach((record, index) => {
-        const recordEl = createTimelineItem(record, index === dateRecords.length - 1);
+        const recordEl = createTimelineItem(record, index === dateRecords.length - 1, index);
         timelineEl.appendChild(recordEl);
       });
       
@@ -327,7 +327,7 @@
     }
     
     // 创建时间轴项目
-    function createTimelineItem(record, isLast) {
+    function createTimelineItem(record, isLast, index) {
       const itemEl = document.createElement('div');
       itemEl.classList.add('relative', 'pl-12', 'pb-6');
       
@@ -342,17 +342,42 @@
       itemEl.appendChild(dotEl);
       
       const contentEl = document.createElement('div');
-      contentEl.classList.add('bg-neutral', 'rounded-lg', 'p-4', 'shadow-sm');
+      contentEl.classList.add('bg-neutral', 'rounded-lg', 'p-4', 'shadow-sm', 'group');
+      
+      const headerEl = document.createElement('div');
+      headerEl.classList.add('flex', 'justify-between', 'items-start', 'mb-1');
       
       const timeEl = document.createElement('div');
-      timeEl.classList.add('text-sm', 'text-gray-500', 'mb-1');
+      timeEl.classList.add('text-sm', 'text-gray-500');
       timeEl.textContent = formatDateTime(new Date(record.timestamp));
+      
+      const actionsEl = document.createElement('div');
+      actionsEl.classList.add('opacity-0', 'group-hover:opacity-100', 'transition-opacity', 'flex', 'gap-2');
+      
+      const editBtn = document.createElement('button');
+      editBtn.classList.add('text-blue-600', 'hover:text-blue-800', 'text-sm');
+      editBtn.innerHTML = '<i class="fa fa-edit"></i>';
+      editBtn.title = '编辑';
+      editBtn.addEventListener('click', () => editRecord(index));
+      
+      const deleteBtn = document.createElement('button');
+      deleteBtn.classList.add('text-red-600', 'hover:text-red-800', 'text-sm');
+      deleteBtn.innerHTML = '<i class="fa fa-trash"></i>';
+      deleteBtn.title = '删除';
+      deleteBtn.addEventListener('click', () => deleteRecord(index));
+      
+      actionsEl.appendChild(editBtn);
+      actionsEl.appendChild(deleteBtn);
+      
+      headerEl.appendChild(timeEl);
+      headerEl.appendChild(actionsEl);
       
       const messageEl = document.createElement('div');
       messageEl.classList.add('text-dark');
       messageEl.textContent = record.message;
+      messageEl.id = `record-message-${index}`;
       
-      contentEl.appendChild(timeEl);
+      contentEl.appendChild(headerEl);
       contentEl.appendChild(messageEl);
       itemEl.appendChild(contentEl);
       
@@ -377,6 +402,75 @@
       renderTimeline();
       // 发送后聚焦到输入框
       messageInput.focus();
+    }
+    
+    // 编辑记录
+    function editRecord(index) {
+      const dateString = formatDate(selectedDate);
+      const dateRecords = records[dateString] || [];
+      
+      if (index >= 0 && index < dateRecords.length) {
+        const record = dateRecords[index];
+        
+        // 创建编辑输入框
+        const messageEl = document.getElementById(`record-message-${index}`);
+        if (messageEl) {
+          const currentMessage = messageEl.textContent;
+          
+          // 创建输入框
+          const inputEl = document.createElement('input');
+          inputEl.type = 'text';
+          inputEl.value = currentMessage;
+          inputEl.classList.add('w-full', 'px-3', 'py-1', 'rounded', 'border', 'border-gray-300', 'focus:outline-none', 'focus:ring-2', 'focus:ring-primary/50', 'focus:border-primary');
+          
+          // 保存和取消按钮
+          const buttonContainer = document.createElement('div');
+          buttonContainer.classList.add('flex', 'gap-2', 'mt-2');
+          
+          const saveBtn = document.createElement('button');
+          saveBtn.textContent = '保存';
+          saveBtn.classList.add('bg-primary', 'text-white', 'px-3', 'py-1', 'rounded', 'hover:bg-primary/90', 'transition-colors');
+          saveBtn.addEventListener('click', () => {
+            dateRecords[index].message = inputEl.value;
+            saveRecords();
+            renderTimeline();
+          });
+          
+          const cancelBtn = document.createElement('button');
+          cancelBtn.textContent = '取消';
+          cancelBtn.classList.add('bg-gray-500', 'text-white', 'px-3', 'py-1', 'rounded', 'hover:bg-gray-600', 'transition-colors');
+          cancelBtn.addEventListener('click', () => {
+            renderTimeline();
+          });
+          
+          buttonContainer.appendChild(saveBtn);
+          buttonContainer.appendChild(cancelBtn);
+          
+          // 替换内容
+          const contentEl = messageEl.parentElement;
+          contentEl.innerHTML = '';
+          contentEl.appendChild(inputEl);
+          contentEl.appendChild(buttonContainer);
+          
+          // 聚焦到输入框
+          inputEl.focus();
+        }
+      }
+    }
+    
+    // 删除记录
+    function deleteRecord(index) {
+      const dateString = formatDate(selectedDate);
+      const dateRecords = records[dateString] || [];
+      
+      if (index >= 0 && index < dateRecords.length) {
+        if (confirm('确定要删除这条记录吗？')) {
+          dateRecords.splice(index, 1);
+          saveRecords();
+          renderTimeline();
+          showNotification('记录已删除', 'success');
+        }
+      }
     }
     
     // 导出当前日期的记录到剪贴板（只导出时间轴数据，不包含标题）
