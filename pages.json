@@ -1,5 +1,14 @@
 [
     {
+        "title": "签到提醒",
+        "description": "管理每日签到任务，跟踪完成情况",
+        "file": "checkin-reminder.html",
+        "imageType": "css",
+        "imageClass": "css-image-butterfly",
+        "image": "https://via.placeholder.com/400x200?text=Check-in+Reminder",
+        "category": "Host工具"
+    },
+    {
         "title": "日志记录",
         "description": "时间轴展示项目的开发日志和里程碑",
         "file": "log.html",
