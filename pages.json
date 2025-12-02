@@ -70,6 +70,15 @@
         "imageClass": "css-image-tech-style",
         "image": "https://via.placeholder.com/400x200?text=CSS+Images",
         "category": "站点信息"
+    },
+    {
+        "title": "Z图像页面",
+        "description": "Z图像功能页面",
+        "file": "z_image.html",
+        "imageType": "css",
+        "imageClass": "css-image-butterfly",
+        "image": "https://via.placeholder.com/400x200?text=Z+Image",
+        "category": "Host工具"
     }
     
 ]
