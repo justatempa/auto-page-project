@@ -290,7 +290,14 @@
             
             <div class="tasks-section">
                 <h2>任务列表</h2>
-                <div id="tasksList"></div>
+                <div id="pendingTasksList"></div>
+                <div id="completedTasksSection" style="margin-top: 20px; display: none;">
+                    <div class="task-header" style="cursor: pointer; padding: 10px; background: #f8f9fa; border-radius: 5px; margin-top: 10px;" onclick="manager.toggleCompletedTasks()">
+                        <div class="task-title">已完成的任务</div>
+                        <div class="task-status status-completed" id="completedCount">0项</div>
+                    </div>
+                    <div id="completedTasksList" style="display: none; margin-top: 10px;"></div>
+                </div>
             </div>
         </div>
         
@@ -474,10 +481,19 @@
             }
             
             renderTasks() {
-                const tasksList = document.getElementById('tasksList');
-                tasksList.innerHTML = '';
+                const pendingTasksList = document.getElementById('pendingTasksList');
+                const completedTasksList = document.getElementById('completedTasksList');
+                const completedTasksSection = document.getElementById('completedTasksSection');
                 
-                this.tasks.forEach(task => {
+                pendingTasksList.innerHTML = '';
+                completedTasksList.innerHTML = '';
+                
+                // 分离待完成和已完成的任务
+                const pendingTasks = this.tasks.filter(task => task.status === 'pending');
+                const completedTasks = this.tasks.filter(task => task.status === 'completed');
+                
+                // 渲染待完成任务
+                pendingTasks.forEach(task => {
                     const taskElement = document.createElement('div');
                     taskElement.className = 'task-item';
                     taskElement.innerHTML = `
@@ -502,8 +518,45 @@
                             <button class="btn btn-danger" onclick="manager.deleteTask('${task.id}')">删除</button>
                         </div>
                     `;
-                    tasksList.appendChild(taskElement);
+                    pendingTasksList.appendChild(taskElement);
                 });
+                
+                // 渲染已完成任务
+                completedTasks.forEach(task => {
+                    const taskElement = document.createElement('div');
+                    taskElement.className = 'task-item';
+                    taskElement.innerHTML = `
+                        <div class="task-header">
+                            <div class="task-title">${task.title}</div>
+                            <div class="task-status ${task.status === 'completed' ? 'status-completed' : 'status-pending'}">
+                                ${task.status === 'completed' ? '已完成' : '未完成'}
+                            </div>
+                        </div>
+                        <div class="task-info">
+                            ${task.description ? `<p><strong>描述:</strong> ${task.description}</p>` : ''}
+                            ${task.url ? `<p><strong>网址:</strong> <a href="${task.url}" target="_blank" class="task-link">${task.url}</a></p>` : ''}
+                            ${task.reward ? `<p><strong>奖励:</strong> ${task.reward}</p>` : ''}
+                            <p><strong>创建时间:</strong> ${new Date(task.createdAt).toLocaleString()}</p>
+                            ${task.completedAt ? `<p><strong>完成时间:</strong> ${new Date(task.completedAt).toLocaleString()}</p>` : ''}
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn ${task.status === 'completed' ? 'btn-danger' : 'btn-success'}" 
+                                    onclick="manager.toggleTaskStatus('${task.id}')">
+                                ${task.status === 'completed' ? '标记为未完成' : '标记为完成'}
+                            </button>
+                            <button class="btn btn-danger" onclick="manager.deleteTask('${task.id}')">删除</button>
+                        </div>
+                    `;
+                    completedTasksList.appendChild(taskElement);
+                });
+                
+                // 更新已完成任务区域的显示
+                if (completedTasks.length > 0) {
+                    document.getElementById('completedCount').textContent = `${completedTasks.length}项`;
+                    completedTasksSection.style.display = 'block';
+                } else {
+                    completedTasksSection.style.display = 'none';
+                }
             }
             
             renderCalendar() {
@@ -593,6 +646,27 @@
             
             saveRecords() {
                 localStorage.setItem('checkin-records', JSON.stringify(this.completionRecords));
+            }
+            
+            toggleCompletedTasks() {
+                const completedTasksList = document.getElementById('completedTasksList');
+                const completedTasksSection = document.getElementById('completedTasksSection');
+                
+                // 获取当前显示状态
+                const isCurrentlyVisible = completedTasksList.style.display !== 'none';
+                
+                // 切换显示状态
+                if (isCurrentlyVisible) {
+                    completedTasksList.style.display = 'none';
+                    // 改变标题样式以指示可以展开
+                    const header = completedTasksSection.querySelector('.task-header');
+                    header.style.backgroundColor = '#f8f9fa';
+                } else {
+                    completedTasksList.style.display = 'block';
+                    // 改变标题样式以指示可以收起
+                    const header = completedTasksSection.querySelector('.task-header');
+                    header.style.backgroundColor = '#e9ecef';
+                }
             }
             
             exportData() {
