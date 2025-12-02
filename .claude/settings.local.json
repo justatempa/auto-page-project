@@ -8,7 +8,11 @@
       "Bash(Copy-Item:*)",
       "Bash(del:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(cmdkey /list:*)",
+      "Bash(findstr:*)",
+      "Bash(control:*)",
+      "Bash(open:*)"
     ],
     "deny": [],
     "ask": []
