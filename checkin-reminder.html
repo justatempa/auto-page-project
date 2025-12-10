@@ -15,25 +15,12 @@
             font-family: 'Microsoft YaHei', Arial, sans-serif;
             background-color: #f5f5f5;
             padding: 20px;
+            color: #333;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 960px;
             margin: 0 auto;
-            display: flex;
-            gap: 20px;
-        }
-        
-        .main-content {
-            flex: 1;
-        }
-        
-        .calendar-section {
-            width: 300px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .header {
@@ -44,9 +31,23 @@
             margin-bottom: 20px;
         }
         
-        .header h1 {
-            color: #333;
-            margin-bottom: 10px;
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-top: 8px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         
         .btn {
@@ -77,6 +78,14 @@
         
         .btn-success:hover {
             background: #218838;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
         }
         
         .tasks-section {
@@ -141,65 +150,7 @@
         .task-actions {
             display: flex;
             gap: 10px;
-        }
-        
-        .calendar {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        
-        .calendar th {
-            background: #f8f9fa;
-            padding: 15px 5px;
-            text-align: center;
-            border: 1px solid #dee2e6;
-        }
-        
-        .calendar td {
-            padding: 0;
-            text-align: center;
-            border: 1px solid #dee2e6;
-            width: 40px;
-            height: 40px;
-            position: relative;
-        }
-        
-        .calendar-day {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            font-size: 12px;
-            cursor: pointer;
-        }
-        
-        .calendar-day.today {
-            background: #007bff;
-            color: white;
-        }
-        
-        .calendar-day.completed {
-            background: #28a745;
-            color: white;
-        }
-        
-        .completion-stats {
-            font-size: 8px;
-            line-height: 1.2;
-        }
-        
-        .today-indicator {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-        
-        .export-section {
-            margin-top: 20px;
-            text-align: center;
+            flex-wrap: wrap;
         }
         
         .task-link {
@@ -209,6 +160,78 @@
         
         .task-link:hover {
             text-decoration: underline;
+        }
+        
+        .key-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        
+        .key-text {
+            font-family: 'Courier New', Consolas, monospace;
+            background: #f1f3f5;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .copy-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            background: #17a2b8;
+            color: #fff;
+        }
+        
+        .copy-btn:hover {
+            background: #138496;
+        }
+        
+        .today-indicator {
+            font-size: 14px;
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        .task-empty {
+            padding: 30px;
+            text-align: center;
+            color: #666;
+            border: 1px dashed #ccc;
+            border-radius: 5px;
+            background: #fafafa;
+        }
+        
+        .task-empty.success {
+            color: #155724;
+            border-color: #c3e6cb;
+            background: #f6ffed;
+        }
+        
+        .completed-section {
+            margin-top: 30px;
+        }
+        
+        .completed-header {
+            cursor: pointer;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border: 1px solid #e2e6ea;
+            border-radius: 5px;
+            transition: background 0.2s ease;
+        }
+        
+        .completed-header.expanded {
+            background: #e9ecef;
+        }
+        
+        .collapsed-list {
+            display: none;
+            margin-top: 10px;
         }
         
         /* 弹窗样式 */
@@ -281,59 +304,52 @@
 </head>
 <body>
     <div class="container">
-        <div class="main-content">
-            <div class="header">
-                <h1>签到提醒系统</h1>
-                <p>管理每日签到任务，跟踪完成情况</p>
-                <button id="addTaskBtn" class="btn" style="margin-top: 10px;">添加任务</button>
-            </div>
-            
-            <div class="tasks-section">
-                <h2>任务列表</h2>
-                <div id="pendingTasksList"></div>
-                <div id="completedTasksSection" style="margin-top: 20px; display: none;">
-                    <div class="task-header" style="cursor: pointer; padding: 10px; background: #f8f9fa; border-radius: 5px; margin-top: 10px;" onclick="manager.toggleCompletedTasks()">
-                        <div class="task-title">已完成的任务</div>
-                        <div class="task-status status-completed" id="completedCount">0项</div>
-                    </div>
-                    <div id="completedTasksList" style="display: none; margin-top: 10px;"></div>
+        <div class="header">
+            <div class="header-top">
+                <div>
+                    <h1>签到提醒系统</h1>
+                    <p class="today-indicator">今日：<span id="todayDate"></span></p>
+                    <p class="subtitle">只记录今天的打卡情况，完成后自动收起。</p>
+                </div>
+                <div class="header-actions">
+                    <button id="addTaskBtn" class="btn">添加任务</button>
+                    <button id="importBtn" class="btn btn-secondary">导入签到记录</button>
+                    <button id="exportBtn" class="btn btn-success">导出签到记录</button>
+                    <input type="file" id="importFileInput" accept="application/json" style="display: none;">
                 </div>
             </div>
         </div>
         
-        <div class="calendar-section">
-            <h2>日历</h2>
-            <div id="currentDate" class="today-indicator"></div>
-            <table class="calendar">
-                <thead>
-                    <tr>
-                        <th>日</th>
-                        <th>一</th>
-                        <th>二</th>
-                        <th>三</th>
-                        <th>四</th>
-                        <th>五</th>
-                        <th>六</th>
-                    </tr>
-                </thead>
-                <tbody id="calendarBody">
-                </tbody>
-            </table>
-            <div class="export-section">
-                <button id="exportBtn" class="btn btn-success">导出签到记录</button>
+        <div class="tasks-section">
+            <h2>今日待打卡</h2>
+            <div id="pendingTasksList"></div>
+            <div id="completedTasksSection" class="completed-section" style="display: none;">
+                <div class="task-header completed-header" onclick="manager.toggleCompletedTasks()">
+                    <div>
+                        <div class="task-title">今日已完成</div>
+                        <div class="today-indicator" id="completedDateLabel"></div>
+                    </div>
+                    <div class="task-status status-completed" id="completedCount">0项</div>
+                </div>
+                <div id="completedTasksList" class="collapsed-list"></div>
             </div>
         </div>
     </div>
     
-    <!-- 添加任务弹窗 -->
+    <!-- 添加/编辑任务弹窗 -->
     <div id="taskModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>添加任务</h2>
+            <h2 id="modalTitle">添加任务</h2>
             <form id="taskForm">
+                <input type="hidden" id="editTaskId">
                 <div class="modal-form-group">
                     <label for="title">标题 *</label>
                     <input type="text" id="title" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="key">Key（留空将自动生成）</label>
+                    <input type="text" id="key" placeholder="请输入唯一 Key 或留空">
                 </div>
                 <div class="modal-form-group">
                     <label for="description">描述</label>
@@ -349,51 +365,136 @@
                 </div>
                 <div class="modal-buttons">
                     <button type="button" class="btn btn-danger" id="cancelBtn">取消</button>
-                    <button type="submit" class="btn">添加任务</button>
+                    <button type="submit" class="btn" id="submitBtn">添加任务</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        // 数据结构定义
         class CheckInManager {
             constructor() {
                 this.tasks = JSON.parse(localStorage.getItem('checkin-tasks')) || [];
                 this.completionRecords = JSON.parse(localStorage.getItem('checkin-records')) || {};
+                this.lastActiveDate = localStorage.getItem('checkin-last-date') || null;
                 this.init();
             }
             
             init() {
+                this.ensureTaskKeys();
+                this.ensureTodayRecord();
+                this.updateTodayIndicator();
                 this.renderTasks();
-                this.renderCalendar();
                 this.bindEvents();
+            }
+            
+            ensureTaskKeys(taskList = this.tasks) {
+                const list = taskList || [];
+                const seen = new Set();
+                let updated = false;
+                
+                list.forEach(task => {
+                    if (!task.id) {
+                        task.id = Date.now().toString() + Math.random().toString(36).slice(2);
+                        updated = true;
+                    }
+                    
+                    if (!task.key || seen.has(task.key)) {
+                        task.key = this.createUniqueKeyFromSet(seen);
+                        updated = true;
+                    } else {
+                        seen.add(task.key);
+                    }
+                });
+                
+                if (list === this.tasks && updated) {
+                    this.saveTasks();
+                }
+                
+                return list;
+            }
+            
+            createUniqueKey(candidate) {
+                const existingKeys = new Set(this.tasks.map(task => task.key).filter(Boolean));
+                if (candidate && !existingKeys.has(candidate)) {
+                    return candidate;
+                }
+                return this.createUniqueKeyFromSet(existingKeys);
+            }
+            
+            createUniqueKeyFromSet(keySet = new Set()) {
+                let key;
+                do {
+                    key = 'TASK-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+                } while (keySet.has(key));
+                keySet.add(key);
+                return key;
+            }
+            
+            ensureTodayRecord() {
+                const today = this.getToday();
+                
+                if (!this.completionRecords[today]) {
+                    this.completionRecords[today] = [];
+                    this.saveRecords();
+                }
+                
+                if (this.lastActiveDate !== today) {
+                    this.lastActiveDate = today;
+                    localStorage.setItem('checkin-last-date', today);
+                }
+            }
+            
+            updateTodayIndicator() {
+                const todayElement = document.getElementById('todayDate');
+                if (todayElement) {
+                    todayElement.textContent = this.getReadableDate(new Date());
+                }
             }
             
             bindEvents() {
                 document.getElementById('taskForm').addEventListener('submit', (e) => {
                     e.preventDefault();
-                    this.addTask();
+                    this.saveTask();
                 });
-                
+
                 document.getElementById('exportBtn').addEventListener('click', () => {
                     this.exportData();
                 });
-                
-                // 弹窗相关事件
+
                 document.getElementById('addTaskBtn').addEventListener('click', () => {
-                    document.getElementById('taskModal').style.display = 'block';
+                    this.openAddModal();
                 });
-                
+
                 document.querySelector('.close').addEventListener('click', () => {
-                    document.getElementById('taskModal').style.display = 'none';
+                    this.closeModal();
                 });
-                
+
                 document.getElementById('cancelBtn').addEventListener('click', () => {
-                    document.getElementById('taskModal').style.display = 'none';
+                    this.closeModal();
                 });
                 
-                // 点击弹窗外区域关闭弹窗
+                const importBtn = document.getElementById('importBtn');
+                const importInput = document.getElementById('importFileInput');
+                
+                if (importBtn && importInput) {
+                    importBtn.addEventListener('click', () => {
+                        importInput.value = '';
+                        importInput.click();
+                    });
+                    
+                    importInput.addEventListener('change', (event) => {
+                        const file = event.target.files[0];
+                        if (!file) return;
+                        if (!confirm('导入将覆盖当前任务和签到记录，是否继续？')) {
+                            importInput.value = '';
+                            return;
+                        }
+                        this.importDataFromFile(file);
+                        importInput.value = '';
+                    });
+                }
+                
                 window.addEventListener('click', (e) => {
                     const modal = document.getElementById('taskModal');
                     if (e.target === modal) {
@@ -402,77 +503,125 @@
                 });
             }
             
-            addTask() {
-                const title = document.getElementById('title').value;
-                const description = document.getElementById('description').value;
-                const url = document.getElementById('url').value;
-                const reward = document.getElementById('reward').value;
-                
+            openAddModal() {
+                document.getElementById('modalTitle').textContent = '添加任务';
+                document.getElementById('submitBtn').textContent = '添加任务';
+                document.getElementById('editTaskId').value = '';
+                document.getElementById('taskForm').reset();
+                document.getElementById('taskModal').style.display = 'block';
+            }
+
+            openEditModal(taskId) {
+                const task = this.tasks.find(t => t.id === taskId);
+                if (!task) return;
+
+                document.getElementById('modalTitle').textContent = '编辑任务';
+                document.getElementById('submitBtn').textContent = '保存修改';
+                document.getElementById('editTaskId').value = taskId;
+                document.getElementById('title').value = task.title || '';
+                document.getElementById('key').value = task.key || '';
+                document.getElementById('description').value = task.description || '';
+                document.getElementById('url').value = task.url || '';
+                document.getElementById('reward').value = task.reward || '';
+                document.getElementById('taskModal').style.display = 'block';
+            }
+
+            closeModal() {
+                document.getElementById('taskModal').style.display = 'none';
+                document.getElementById('taskForm').reset();
+                document.getElementById('editTaskId').value = '';
+            }
+
+            saveTask() {
+                const title = document.getElementById('title').value.trim();
+                const description = document.getElementById('description').value.trim();
+                const url = document.getElementById('url').value.trim();
+                const reward = document.getElementById('reward').value.trim();
+                const keyInputValue = document.getElementById('key').value.trim();
+                const editTaskId = document.getElementById('editTaskId').value;
+
                 if (!title) return;
-                
-                const task = {
-                    id: Date.now().toString(),
-                    title,
-                    description,
-                    url,
-                    reward,
-                    status: 'pending', // 'pending' or 'completed'
-                    createdAt: new Date().toISOString(),
-                    completedAt: null
-                };
-                
-                this.tasks.push(task);
+
+                if (editTaskId) {
+                    const task = this.tasks.find(t => t.id === editTaskId);
+                    if (!task) return;
+
+                    if (keyInputValue && keyInputValue !== task.key && this.tasks.some(t => t.key === keyInputValue)) {
+                        alert('Key 已存在，请输入其他值。');
+                        return;
+                    }
+
+                    task.title = title;
+                    task.key = keyInputValue || task.key;
+                    task.description = description;
+                    task.url = url;
+                    task.reward = reward;
+                } else {
+                    if (keyInputValue && this.tasks.some(task => task.key === keyInputValue)) {
+                        alert('Key 已存在，请输入其他值。');
+                        return;
+                    }
+
+                    const now = new Date().toISOString();
+                    const task = {
+                        id: Date.now().toString(),
+                        key: keyInputValue || this.createUniqueKey(),
+                        title,
+                        description,
+                        url,
+                        reward,
+                        status: 'pending',
+                        createdAt: now,
+                        completedAt: null
+                    };
+
+                    this.tasks.push(task);
+                }
+
                 this.saveTasks();
                 this.renderTasks();
-                
-                // 重置表单并关闭弹窗
-                document.getElementById('taskForm').reset();
-                document.getElementById('taskModal').style.display = 'none';
+                this.closeModal();
             }
             
             toggleTaskStatus(taskId) {
                 const task = this.tasks.find(t => t.id === taskId);
-                if (task) {
-                    const today = this.getToday();
-                    if (task.status === 'pending') {
-                        task.status = 'completed';
-                        task.completedAt = new Date().toISOString();
-                    } else {
-                        task.status = 'pending';
-                        task.completedAt = null;
-                    }
-                    
-                    // 更新完成记录
-                    if (!this.completionRecords[today]) {
-                        this.completionRecords[today] = [];
-                    }
-                    const taskIndex = this.completionRecords[today].findIndex(t => t.taskId === taskId);
-                    if (task.status === 'completed') {
-                        if (taskIndex === -1) {
-                            this.completionRecords[today].push({
-                                taskId,
-                                completedAt: new Date().toISOString()
-                            });
-                        }
-                    } else {
-                        if (taskIndex !== -1) {
-                            this.completionRecords[today].splice(taskIndex, 1);
-                        }
-                    }
-                    
-                    this.saveTasks();
-                    this.saveRecords();
-                    this.renderTasks();
-                    this.renderCalendar();
+                if (!task) return;
+                
+                const today = this.getToday();
+                if (!this.completionRecords[today]) {
+                    this.completionRecords[today] = [];
                 }
+                
+                const todayRecords = this.completionRecords[today];
+                const recordIndex = todayRecords.findIndex(record => record.taskId === taskId);
+                
+                if (recordIndex === -1) {
+                    const completionTime = new Date().toISOString();
+                    todayRecords.push({ taskId, completedAt: completionTime });
+                    task.status = 'completed';
+                    task.completedAt = completionTime;
+                } else {
+                    todayRecords.splice(recordIndex, 1);
+                    task.status = 'pending';
+                    task.completedAt = null;
+                }
+                
+                this.saveTasks();
+                this.saveRecords();
+                this.renderTasks();
             }
             
             deleteTask(taskId) {
                 if (confirm('确定要删除这个任务吗？删除后该任务将不再需要签到，但之前的签到记录会保留。')) {
                     this.tasks = this.tasks.filter(t => t.id !== taskId);
+                    
+                    Object.keys(this.completionRecords).forEach(date => {
+                        this.completionRecords[date] = this.completionRecords[date].filter(record => record.taskId !== taskId);
+                    });
+                    
                     this.saveTasks();
+                    this.saveRecords();
                     this.renderTasks();
-                    this.renderCalendar();
                 }
             }
             
@@ -480,164 +629,132 @@
                 return new Date().toISOString().split('T')[0];
             }
             
+            getReadableDate(date) {
+                return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+            }
+            
             renderTasks() {
                 const pendingTasksList = document.getElementById('pendingTasksList');
                 const completedTasksList = document.getElementById('completedTasksList');
                 const completedTasksSection = document.getElementById('completedTasksSection');
+                const completedDateLabel = document.getElementById('completedDateLabel');
+                const completedHeader = document.querySelector('.completed-header');
                 
                 pendingTasksList.innerHTML = '';
                 completedTasksList.innerHTML = '';
                 
-                // 分离待完成和已完成的任务
-                const pendingTasks = this.tasks.filter(task => task.status === 'pending');
-                const completedTasks = this.tasks.filter(task => task.status === 'completed');
+                const today = this.getToday();
+                const todayRecords = this.completionRecords[today] || [];
+                const recordMap = new Map(todayRecords.map(record => [record.taskId, record]));
                 
-                // 渲染待完成任务
-                pendingTasks.forEach(task => {
-                    const taskElement = document.createElement('div');
-                    taskElement.className = 'task-item';
-                    taskElement.innerHTML = `
-                        <div class="task-header">
-                            <div class="task-title">${task.title}</div>
-                            <div class="task-status ${task.status === 'completed' ? 'status-completed' : 'status-pending'}">
-                                ${task.status === 'completed' ? '已完成' : '未完成'}
+                const pendingTasks = this.tasks.filter(task => !recordMap.has(task.id));
+                const completedTasks = this.tasks.filter(task => recordMap.has(task.id));
+                
+                if (pendingTasks.length === 0) {
+                    const emptyState = document.createElement('div');
+                    emptyState.className = 'task-empty' + (this.tasks.length ? ' success' : '');
+                    emptyState.textContent = this.tasks.length ? '今日任务已全部完成，继续保持！' : '今日暂无待打卡任务，点击“添加任务”开始记录。';
+                    pendingTasksList.appendChild(emptyState);
+                } else {
+                    pendingTasks.forEach(task => {
+                        const taskElement = document.createElement('div');
+                        taskElement.className = 'task-item';
+                        const keyRowHtml = this.buildKeyRow(task);
+                        taskElement.innerHTML = `
+                            <div class="task-header">
+                                <div class="task-title">${task.title}</div>
+                                <div class="task-status status-pending">未完成</div>
                             </div>
-                        </div>
-                        <div class="task-info">
-                            ${task.description ? `<p><strong>描述:</strong> ${task.description}</p>` : ''}
-                            ${task.url ? `<p><strong>网址:</strong> <a href="${task.url}" target="_blank" class="task-link">${task.url}</a></p>` : ''}
-                            ${task.reward ? `<p><strong>奖励:</strong> ${task.reward}</p>` : ''}
-                            <p><strong>创建时间:</strong> ${new Date(task.createdAt).toLocaleString()}</p>
-                            ${task.completedAt ? `<p><strong>完成时间:</strong> ${new Date(task.completedAt).toLocaleString()}</p>` : ''}
-                        </div>
-                        <div class="task-actions">
-                            <button class="btn ${task.status === 'completed' ? 'btn-danger' : 'btn-success'}" 
-                                    onclick="manager.toggleTaskStatus('${task.id}')">
-                                ${task.status === 'completed' ? '标记为未完成' : '标记为完成'}
-                            </button>
-                            <button class="btn btn-danger" onclick="manager.deleteTask('${task.id}')">删除</button>
-                        </div>
-                    `;
-                    pendingTasksList.appendChild(taskElement);
-                });
-                
-                // 渲染已完成任务
-                completedTasks.forEach(task => {
-                    const taskElement = document.createElement('div');
-                    taskElement.className = 'task-item';
-                    taskElement.innerHTML = `
-                        <div class="task-header">
-                            <div class="task-title">${task.title}</div>
-                            <div class="task-status ${task.status === 'completed' ? 'status-completed' : 'status-pending'}">
-                                ${task.status === 'completed' ? '已完成' : '未完成'}
+                            <div class="task-info">
+                                ${task.description ? `<p><strong>描述:</strong> ${task.description}</p>` : ''}
+                                ${task.url ? `<p><strong>网址:</strong> <a href="${task.url}" target="_blank" class="task-link">${task.url}</a></p>` : ''}
+                                ${task.reward ? `<p><strong>奖励:</strong> ${task.reward}</p>` : ''}
+                                <p><strong>创建时间:</strong> ${new Date(task.createdAt).toLocaleString()}</p>
+                                ${keyRowHtml}
                             </div>
-                        </div>
-                        <div class="task-info">
-                            ${task.description ? `<p><strong>描述:</strong> ${task.description}</p>` : ''}
-                            ${task.url ? `<p><strong>网址:</strong> <a href="${task.url}" target="_blank" class="task-link">${task.url}</a></p>` : ''}
-                            ${task.reward ? `<p><strong>奖励:</strong> ${task.reward}</p>` : ''}
-                            <p><strong>创建时间:</strong> ${new Date(task.createdAt).toLocaleString()}</p>
-                            ${task.completedAt ? `<p><strong>完成时间:</strong> ${new Date(task.completedAt).toLocaleString()}</p>` : ''}
-                        </div>
-                        <div class="task-actions">
-                            <button class="btn ${task.status === 'completed' ? 'btn-danger' : 'btn-success'}" 
-                                    onclick="manager.toggleTaskStatus('${task.id}')">
-                                ${task.status === 'completed' ? '标记为未完成' : '标记为完成'}
-                            </button>
-                            <button class="btn btn-danger" onclick="manager.deleteTask('${task.id}')">删除</button>
-                        </div>
-                    `;
-                    completedTasksList.appendChild(taskElement);
-                });
+                            <div class="task-actions">
+                                <button class="btn btn-success" onclick="manager.toggleTaskStatus('${task.id}')">标记为完成</button>
+                                <button class="btn btn-secondary" onclick="manager.openEditModal('${task.id}')">编辑</button>
+                                <button class="btn btn-danger" onclick="manager.deleteTask('${task.id}')">删除</button>
+                            </div>
+                        `;
+                        pendingTasksList.appendChild(taskElement);
+                    });
+                }
                 
-                // 更新已完成任务区域的显示
                 if (completedTasks.length > 0) {
-                    document.getElementById('completedCount').textContent = `${completedTasks.length}项`;
                     completedTasksSection.style.display = 'block';
+                    completedTasksList.style.display = 'none';
+                    if (completedHeader) {
+                        completedHeader.classList.remove('expanded');
+                    }
+                    document.getElementById('completedCount').textContent = `${completedTasks.length}项`;
+                    if (completedDateLabel) {
+                        completedDateLabel.textContent = `记录日期：${this.getReadableDate(new Date())}`;
+                    }
+                    
+                    completedTasks.forEach(task => {
+                        const record = recordMap.get(task.id);
+                        const completionTime = record ? new Date(record.completedAt).toLocaleString() : '';
+                        const taskElement = document.createElement('div');
+                        taskElement.className = 'task-item';
+                        const keyRowHtml = this.buildKeyRow(task);
+                        taskElement.innerHTML = `
+                            <div class="task-header">
+                                <div class="task-title">${task.title}</div>
+                                <div class="task-status status-completed">已完成</div>
+                            </div>
+                            <div class="task-info">
+                                ${task.description ? `<p><strong>描述:</strong> ${task.description}</p>` : ''}
+                                ${task.url ? `<p><strong>网址:</strong> <a href="${task.url}" target="_blank" class="task-link">${task.url}</a></p>` : ''}
+                                ${task.reward ? `<p><strong>奖励:</strong> ${task.reward}</p>` : ''}
+                                ${completionTime ? `<p><strong>完成时间:</strong> ${completionTime}</p>` : ''}
+                                ${keyRowHtml}
+                            </div>
+                            <div class="task-actions">
+                                <button class="btn" onclick="manager.toggleTaskStatus('${task.id}')">标记为未完成</button>
+                                <button class="btn btn-secondary" onclick="manager.openEditModal('${task.id}')">编辑</button>
+                                <button class="btn btn-danger" onclick="manager.deleteTask('${task.id}')">删除</button>
+                            </div>
+                        `;
+                        completedTasksList.appendChild(taskElement);
+                    });
                 } else {
                     completedTasksSection.style.display = 'none';
-                }
-            }
-            
-            renderCalendar() {
-                const today = new Date();
-                const currentMonth = today.getMonth();
-                const currentYear = today.getFullYear();
-                
-                // 显示当前日期
-                document.getElementById('currentDate').textContent = 
-                    `${currentYear}年${currentMonth + 1}月${today.getDate()}日`;
-                
-                // 获取当月第一天和最后一天
-                const firstDay = new Date(currentYear, currentMonth, 1);
-                const lastDay = new Date(currentYear, currentMonth + 1, 0);
-                const startDay = firstDay.getDay(); // 0 = Sunday, 1 = Monday, etc.
-                const daysInMonth = lastDay.getDate();
-                
-                const calendarBody = document.getElementById('calendarBody');
-                calendarBody.innerHTML = '';
-                
-                let date = 1;
-                for (let i = 0; i < 6; i++) {
-                    const row = document.createElement('tr');
-                    
-                    for (let j = 0; j < 7; j++) {
-                        const cell = document.createElement('td');
-                        
-                        if (i === 0 && j < startDay) {
-                            // 空白单元格
-                            cell.innerHTML = '&nbsp;';
-                        } else if (date > daysInMonth) {
-                            // 超出月份的空白单元格
-                            cell.innerHTML = '&nbsp;';
-                        } else {
-                            const dayDate = new Date(currentYear, currentMonth, date);
-                            const dateStr = dayDate.toISOString().split('T')[0];
-                            
-                            const dayElement = document.createElement('div');
-                            dayElement.className = 'calendar-day';
-                            dayElement.innerHTML = `<div>${date}</div><div class="completion-stats">${this.getCompletionStats(dateStr)}</div>`;
-                            
-                            // 检查是否是今天
-                            if (dateStr === this.getToday()) {
-                                dayElement.classList.add('today');
-                            }
-                            
-                            // 计算当天完成的任务数量
-                            const todayRecords = this.completionRecords[dateStr] || [];
-                            const completedCount = todayRecords.length;
-                            const totalTasks = this.tasks.length;
-                            
-                            if (completedCount > 0) {
-                                dayElement.classList.add('completed');
-                            }
-                            
-                            // 如果全部完成，显示绿色背景
-                            if (completedCount === totalTasks && totalTasks > 0) {
-                                dayElement.style.backgroundColor = '#28a745';
-                                dayElement.style.color = 'white';
-                            }
-                            
-                            cell.appendChild(dayElement);
-                            date++;
-                        }
-                        
-                        row.appendChild(cell);
+                    if (completedDateLabel) {
+                        completedDateLabel.textContent = '';
                     }
-                    
-                    calendarBody.appendChild(row);
-                    
-                    if (date > daysInMonth) {
-                        break;
+                    if (completedHeader) {
+                        completedHeader.classList.remove('expanded');
                     }
                 }
             }
             
-            getCompletionStats(dateStr) {
-                const todayRecords = this.completionRecords[dateStr] || [];
-                const completedCount = todayRecords.length;
-                const totalTasks = this.tasks.length;
-                return `${completedCount}/${totalTasks}`;
+            buildKeyRow(task) {
+                if (!task) {
+                    return '';
+                }
+                const keyValue = task.key || task.id || '';
+                if (!keyValue) {
+                    return '';
+                }
+                
+                const safeKeyAttr = this.escapeAttribute(keyValue);
+                return `
+                    <div class="key-row">
+                        <strong>Key:</strong>
+                        <span class="key-text">${keyValue}</span>
+                        <button type="button" class="copy-btn" data-key="${safeKeyAttr}" onclick="manager.copyKey(this)">复制 Key</button>
+                    </div>
+                `;
+            }
+            
+            escapeAttribute(value) {
+                return (value || '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
             }
             
             saveTasks() {
@@ -650,23 +767,115 @@
             
             toggleCompletedTasks() {
                 const completedTasksList = document.getElementById('completedTasksList');
-                const completedTasksSection = document.getElementById('completedTasksSection');
-                
-                // 获取当前显示状态
-                const isCurrentlyVisible = completedTasksList.style.display !== 'none';
-                
-                // 切换显示状态
-                if (isCurrentlyVisible) {
-                    completedTasksList.style.display = 'none';
-                    // 改变标题样式以指示可以展开
-                    const header = completedTasksSection.querySelector('.task-header');
-                    header.style.backgroundColor = '#f8f9fa';
-                } else {
-                    completedTasksList.style.display = 'block';
-                    // 改变标题样式以指示可以收起
-                    const header = completedTasksSection.querySelector('.task-header');
-                    header.style.backgroundColor = '#e9ecef';
+                const completedHeader = document.querySelector('.completed-header');
+                if (!completedTasksList || !completedHeader) {
+                    return;
                 }
+                
+                const shouldShow = completedTasksList.style.display === 'none';
+                completedTasksList.style.display = shouldShow ? 'block' : 'none';
+                completedHeader.classList.toggle('expanded', shouldShow);
+            }
+            
+            copyKey(button) {
+                if (!button || !button.dataset) {
+                    return;
+                }
+                const keyValue = button.dataset.key;
+                if (!keyValue) {
+                    return;
+                }
+                
+                const originalText = button.textContent;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(keyValue)
+                        .then(() => this.showCopyFeedback(button, originalText, '已复制'))
+                        .catch(() => this.fallbackCopyKey(keyValue, button, originalText));
+                } else {
+                    this.fallbackCopyKey(keyValue, button, originalText);
+                }
+            }
+            
+            fallbackCopyKey(value, button, originalText) {
+                const textarea = document.createElement('textarea');
+                textarea.value = value;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                
+                let success = false;
+                try {
+                    success = document.execCommand('copy');
+                } catch (error) {
+                    console.error('复制 Key 失败', error);
+                }
+                
+                document.body.removeChild(textarea);
+                this.showCopyFeedback(button, originalText, success ? '已复制' : '复制失败', success);
+            }
+            
+            showCopyFeedback(button, originalText, message, success = true) {
+                if (!button) return;
+                button.textContent = message;
+                button.disabled = true;
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, success ? 1500 : 2000);
+            }
+            
+            importDataFromFile(file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        this.applyImportedData(data);
+                        alert('导入成功');
+                    } catch (error) {
+                        console.error('导入失败', error);
+                        alert('导入失败：' + error.message);
+                    }
+                };
+                
+                reader.onerror = () => {
+                    alert('文件读取失败，请重试。');
+                };
+                
+                reader.readAsText(file, 'utf-8');
+            }
+            
+            applyImportedData(data) {
+                if (!data || typeof data !== 'object') {
+                    throw new Error('文件内容无效');
+                }
+                
+                const importedTasks = Array.isArray(data.tasks) ? data.tasks : [];
+                const normalizedTasks = importedTasks.map(task => ({
+                    id: task.id || (Date.now().toString() + Math.random().toString(36).slice(2)),
+                    key: task.key || '',
+                    title: task.title || '未命名任务',
+                    description: task.description || '',
+                    url: task.url || '',
+                    reward: task.reward || '',
+                    status: task.status === 'completed' ? 'completed' : 'pending',
+                    createdAt: task.createdAt || new Date().toISOString(),
+                    completedAt: task.completedAt || null
+                }));
+                
+                const importedRecords = data.completionRecords && typeof data.completionRecords === 'object'
+                    ? data.completionRecords
+                    : {};
+                
+                this.tasks = normalizedTasks;
+                this.ensureTaskKeys();
+                this.completionRecords = importedRecords;
+                this.lastActiveDate = this.getToday();
+                localStorage.setItem('checkin-last-date', this.lastActiveDate);
+                this.ensureTodayRecord();
+                this.saveTasks();
+                this.saveRecords();
+                this.renderTasks();
             }
             
             exportData() {
@@ -677,7 +886,7 @@
                 };
                 
                 const dataStr = JSON.stringify(data, null, 2);
-                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
                 const url = URL.createObjectURL(dataBlob);
                 
                 const link = document.createElement('a');
@@ -689,7 +898,6 @@
             }
         }
         
-        // 初始化应用
         const manager = new CheckInManager();
     </script>
 </body>
