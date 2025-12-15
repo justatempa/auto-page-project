@@ -12,7 +12,12 @@
       "Bash(cmdkey /list:*)",
       "Bash(findstr:*)",
       "Bash(control:*)",
-      "Bash(open:*)"
+      "Bash(open:*)",
+      "Bash(git add:*)",
+      "mcp__mysql-mcp__describe_table",
+      "mcp__mysql-mcp__mysql_query",
+      "Skill(frontend-design)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []
